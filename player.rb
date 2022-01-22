@@ -12,10 +12,32 @@ class Player
   end
 end
 
-# Specifics for human player
-class Human < Player
+# Codebreaker role
+module CodeBreaker
+  # Specifics for human player
+  class Human < Player; end
+  # Specifics for AI player
+  class Computer < Player; end
 end
 
-# Specifics for AI player
-class Computer < Player
+# Codemaster role
+module CodeMaster
+  # Specifics for human player
+  class Human < Player; end
+
+  # Specifics for AI player
+  class Computer < Player
+    def feedback(combo, guess)
+      black = 0
+      white = 0
+      guess.each_with_index do |peg, i|
+        if combo[i] == peg
+          black += 1
+        elsif combo.count(peg) == guess.count(peg)
+          white += 1
+        end
+      end
+      black == 4 ? (puts 'Correct!') : [black, white]
+    end
+  end
 end
