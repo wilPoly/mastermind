@@ -4,6 +4,8 @@ require_relative './board'
 require_relative './player'
 
 class Game
+  TURNS = 12
+
   def initialize
     @codemaster = Computer.new('Hal', 'codemaster')
     @codebreaker = Human.new('Hooman', 'codebreaker')
@@ -11,12 +13,15 @@ class Game
   end
 
   def round
-    until @board.rows.length == 12
+    @turns_left = TURNS
+    until @turns_left == 0
       p @board.secret_combo
       guess = @codebreaker.guess_combo
       feedback = @codemaster.give_feedback(@board.secret_combo, guess)
-      @board.rows[guess] = feedback
+      @board.put_pegs(guess, feedback)
       @board.display_board
+      @turns_left -= 1
+      puts @turns_left
     end
   end
 end

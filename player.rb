@@ -32,7 +32,7 @@ end
 # Specifics for AI player
 class Computer < Player
   def define_secret
-    Array.new(5) { rand(1..6) }
+    Array.new(4) { rand(1..6) }
   end
 
   def give_feedback(secret, guess)
