@@ -45,16 +45,16 @@ class Computer < Player
         white += 1
       end
     end
-    black == 4 ? (puts 'Correct!') : [black, white]
+    [black, white]
   end
 end
 
-human = Human.new('Will', 'Codebreaker')
-cpu = Computer.new('Hal', 'Codemaster')
+# human = Human.new('Will', 'Codebreaker')
+# cpu = Computer.new('Hal', 'Codemaster')
 
-combo = cpu.define_secret
+# combo = cpu.define_secret
 
-cpu.give_feedback(combo, human.guess_combo)
+# cpu.give_feedback(combo, human.guess_combo)
 
 # p human
 # p cpu
