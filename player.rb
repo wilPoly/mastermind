@@ -41,7 +41,7 @@ class Computer < Player
     guess.each_with_index do |peg, i|
       if secret[i] == peg
         black += 1
-      elsif secret.count(peg) == guess.count(peg)
+      elsif (guess.count(peg) <= secret.count(peg)) && secret.include?(peg)
         white += 1
       end
     end
