@@ -3,6 +3,7 @@
 require_relative './board'
 require_relative './player'
 
+# Game engine
 class Game
   TURNS = 12
 
@@ -14,7 +15,7 @@ class Game
 
   def round
     @turns_left = TURNS
-    until @turns_left == 0
+    until @turns_left.zero?
       p @board.secret_combo
       guess = @codebreaker.guess_combo
       feedback = @codemaster.give_feedback(@board.secret_combo, guess)

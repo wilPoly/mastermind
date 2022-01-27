@@ -23,7 +23,8 @@ class Human < Player
     until valid_entry
       puts 'Enter a 4-number combination with numbers from 1 to 6'
       guess = gets.chomp.split('').map(&:to_i)
-      valid_entry = (guess.length == 4) && guess.all? { |number| number <= 6 && number.is_a?(Integer) }
+      valid_entry =
+        (guess.length == 4) && guess.all? { |number| number.positive? && number <= 6 && number.is_a?(Integer) }
     end
     guess
   end
@@ -35,17 +36,34 @@ class Computer < Player
     Array.new(4) { rand(1..6) }
   end
 
-  def give_feedback(secret, guess)
-    black = 0
-    white = 0
-    guess.each_with_index do |peg, i|
-      if secret[i] == peg
-        black += 1
-      elsif (guess.count(peg) <= secret.count(peg)) && secret.include?(peg)
-        white += 1
-      end
+  def count_pegs(secret, guess)
+    secret_count = []
+    guess_count = []
+
+    (1..6).each do |i|
+      secret_count << secret.count(i)
+      guess_count << guess.count(i)
     end
-    [black, white]
+
+    secret_count.each_index.reduce(0) do |sum, i|
+      sum += [secret_count[i], guess_count[i]].min
+      sum
+    end
+  end
+
+  def count_blacks(secret, guess)
+    guess.each_index.reduce(0) do |sum, i|
+      sum += 1 if secret[i] == guess[i]
+      sum
+    end
+  end
+
+  def count_whites(secret, guess)
+    count_pegs(secret, guess) - count_blacks(secret, guess)
+  end
+
+  def give_feedback(secret, guess)
+    [count_blacks(secret, guess), count_whites(secret, guess)]
   end
 end
 
