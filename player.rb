@@ -24,7 +24,7 @@ class Human < Player
       puts 'Enter a 4-number combination with numbers from 1 to 6'
       guess = gets.chomp.split('').map(&:to_i)
       valid_entry =
-        (guess.length == 4) && guess.all? { |number| number.positive? && number <= 6 && number.is_a?(Integer) }
+        (guess.length == 4) && guess.all? { |number| number.is_a?(Integer) && number.positive? && number <= 6 }
     end
     guess
   end
@@ -66,19 +66,3 @@ class Computer < Player
     [count_blacks(secret, guess), count_whites(secret, guess)]
   end
 end
-
-# human = Human.new('Will', 'Codebreaker')
-# cpu = Computer.new('Hal', 'Codemaster')
-
-# combo = cpu.define_secret
-
-# cpu.give_feedback(combo, human.guess_combo)
-
-# p human
-# p cpu
-
-# p human.class
-# p cpu.class
-
-# p Human.ancestors
-# p Computer.ancestors

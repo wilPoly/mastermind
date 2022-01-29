@@ -4,7 +4,7 @@
 class Board
   attr_reader :secret_combo
 
-  def initialize(secret_combo)  
+  def initialize(secret_combo)
     @secret_combo = secret_combo
     @guesses = []
     @feedbacks = []
