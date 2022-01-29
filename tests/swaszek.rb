@@ -36,24 +36,20 @@ end
 
 puts "Secret: #{secret = [3, 6, 5, 2]}"
 # Create the list 1111,...,6666 of all candidate secret codes
-guess_list_temp = (1111..6666).map { |n| n.to_s.split("").map(&:to_i) }
+guess_list_temp = (1111..6666).map { |n| n.to_s.split('').map(&:to_i) }
 guess_list = guess_list_temp.filter { |combo| combo.none?(0) } # removes all combos including 0
 
 # Start with 1122.
 p guess = [1, 1, 2, 2]
 clue = human_give_clue
 
- # Repeat the following 2 steps:
+# Repeat the following 2 steps:
 until clue == [4, 0]
-  # After you got the answer (number of red and number of white pegs) eliminate from the list of candidates 
+  # After you got the answer (number of red and number of white pegs) eliminate from the list of candidates
   # all codes that would not have produced the same answer if they were the secret code.
-  update_guess_list = 
-    guess_list.filter do |ans|
-      clue == give_feedback(ans, guess)
-    end
+  guess_list = guess_list.filter { |ans| clue == give_feedback(ans, guess) }
   # Pick the first element in the list and use it as new guess.
-  p guess = update_guess_list[0]
-  puts "Secret: #{secret = [3, 6, 5, 2]}"
+  p guess = guess_list[0]
+  puts "Secret: #{secret}"
   clue = human_give_clue
 end
-
