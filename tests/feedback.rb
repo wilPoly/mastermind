@@ -10,26 +10,6 @@ guess5 = [1, 1, 2, 3] # => "Correct !"
 guess6 = [1, 1, 3, 1] # => [2, 1]
 guess7 = [1, 1, 1, 1] # => [2, 0]
 
-def feedback(secret, guess)
-  black = 0
-  white = 0
-  guess.each_with_index do |peg, i|
-    if secret[i] == peg
-      black += 1
-    elsif (guess.count(peg) <= secret.count(peg)) && secret.include?(peg)
-      white += 1
-    end
-  end
-  puts "#{guess} ==> #{black == 4 ? (puts 'Correct!') : [black, white]}"
-end
-
-def count_blacks(secret, guess)
-  guess.each_index.reduce(0) do |sum, i|
-    sum += 1 if secret[i] == guess[i]
-    sum
-  end
-end
-
 def count_pegs(secret, guess)
   secret_count = []
   guess_count = []
@@ -41,6 +21,13 @@ def count_pegs(secret, guess)
 
   secret_count.each_index.reduce(0) do |sum, i|
     sum += [secret_count[i], guess_count[i]].min
+    sum
+  end
+end
+
+def count_blacks(secret, guess)
+  guess.each_index.reduce(0) do |sum, i|
+    sum += 1 if secret[i] == guess[i]
     sum
   end
 end
