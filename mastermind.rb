@@ -8,9 +8,34 @@ class Game
   TURNS = 12
 
   def initialize
-    @codemaster = Computer.new('Hal', 'codemaster')
-    @codebreaker = Human.new('Hooman', 'codebreaker')
+    @cpu_player = Computer.new('Hal', 'codemaster')
+    @human_player = Human.new('Hooman', 'codebreaker')
+  end
+
+  def new_game
+    # change
+    choose_role
     @board = Board.new(@codemaster.define_secret)
+  end
+
+  def choose_role
+    puts 'How do you want to play?'
+    puts '1. Codemaster | 2. Codebreaker'
+    response = gets.chomp.to_i
+    until (response == 1 || response == 2)
+      case response
+      when 1
+        @codemaster = @human_player
+        @codebreaker = @cpu_player
+        break
+      when 2
+        @codebreaker = @human_player
+        @codemaster = @cpu_player
+        break
+      else
+        response = gets.chomp.to_i
+      end
+    end
   end
 
   def round

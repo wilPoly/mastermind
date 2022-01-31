@@ -2,12 +2,11 @@
 
 # General Player class
 class Player
-  attr_reader :name, :role
-  attr_accessor :score
+  attr_reader :name
+  attr_accessor :role, :score
 
-  def initialize(name, role, score: 0)
+  def initialize(name, score: 0)
     @name = name
-    @role = role
     @score = score
   end
 
@@ -18,15 +17,23 @@ end
 
 # Specifics for human player
 class Human < Player
-  def guess_combo
+  def combo_input
     valid_entry = false
     until valid_entry
       puts 'Enter a 4-number combination with numbers from 1 to 6'
-      guess = gets.chomp.split('').map(&:to_i)
+      combo = gets.chomp.split('').map(&:to_i)
       valid_entry =
-        (guess.length == 4) && guess.all? { |number| number.is_a?(Integer) && number.positive? && number <= 6 }
+        (combo.length == 4) && combo.all? { |number| number.is_a?(Integer) && number.positive? && number <= 6 }
     end
-    guess
+    combo
+  end
+
+  def guess_combo
+    combo_input # use alias_method ???
+  end
+
+  def define_secret
+    combo_input
   end
 end
 
