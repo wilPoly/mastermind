@@ -2,7 +2,7 @@
 
 # Board class: handles the content of the board
 class Board
-  attr_reader :secret_combo
+  attr_reader :secret_combo, :guesses, :feedbacks
 
   def initialize(secret_combo)
     @secret_combo = secret_combo

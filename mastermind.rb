@@ -8,49 +8,47 @@ class Game
   TURNS = 12
 
   def initialize
-    @cpu_player = Computer.new('Hal', 'codemaster')
-    @human_player = Human.new('Hooman', 'codebreaker')
-  end
-
-  def new_game
-    # change
-    choose_role
-    @board = Board.new(@codemaster.define_secret)
+    p @cpu_player = Computer.new('Hal')
+    p @human_player = Human.new('Hooman')
+    new_game
   end
 
   def choose_role
-    puts 'How do you want to play?'
-    puts '1. Codemaster | 2. Codebreaker'
+    puts "How do you want to play?\n1. Codemaster || 2. Codebreaker"
     response = gets.chomp.to_i
-    until (response == 1 || response == 2)
-      case response
-      when 1
-        @codemaster = @human_player
-        @codebreaker = @cpu_player
-        break
-      when 2
-        @codebreaker = @human_player
-        @codemaster = @cpu_player
-        break
-      else
-        response = gets.chomp.to_i
-      end
+    case response
+    when 1
+      @codemaster = @human_player
+      @codebreaker = @cpu_player
+    when 2
+      @codemaster = @cpu_player
+      @codebreaker = @human_player
     end
+  end
+
+  def new_game
+    @cpu_player.new_game
+    choose_role
+    @board = Board.new(@codemaster.define_secret)
+    round
   end
 
   def round
     @turns_left = TURNS
     until @turns_left.zero?
       p @board.secret_combo
-      guess = @codebreaker.guess_combo
+      # Reminds the last guess and the last feedback given
+      guess = @codebreaker.guess_combo(@board.guesses.last, @board.feedbacks.last)
       feedback = @codemaster.give_feedback(@board.secret_combo, guess)
       @board.put_pegs(guess, feedback)
       @board.display_board
+      # win condition
       @turns_left -= 1
       puts @turns_left
     end
   end
 end
 
-game = Game.new
-game.round
+Game.new
+# game.round
+# game.choose_role

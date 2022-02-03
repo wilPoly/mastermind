@@ -3,7 +3,7 @@
 # General Player class
 class Player
   attr_reader :name
-  attr_accessor :role, :score
+  attr_accessor :score
 
   def initialize(name, score: 0)
     @name = name
@@ -11,7 +11,7 @@ class Player
   end
 
   def to_s
-    "#{@name} - score: #{@score}"
+    "#{@name} is #{role} - Score: #{@score}"
   end
 end
 
@@ -23,22 +23,43 @@ class Human < Player
       puts 'Enter a 4-number combination with numbers from 1 to 6'
       combo = gets.chomp.split('').map(&:to_i)
       valid_entry =
-        (combo.length == 4) && combo.all? { |number| number.is_a?(Integer) && number.positive? && number <= 6 }
+        (combo.length == 4) && combo.all? { |number| number.positive? && number <= 6 }
     end
     combo
   end
 
-  def guess_combo
-    combo_input # use alias_method ???
+  def guess_combo(*)
+    combo_input
   end
 
   def define_secret
+    puts 'Choose your secret combination.'
     combo_input
+  end
+
+  def give_feedback(secret, guess)
+    puts "Your secret combo: #{secret}\nCodebreaker's guess: #{guess}"
+    valid_entry = false
+    until valid_entry
+      puts 'Enter number of pegs of the correct value and correct position (0-4),'\
+      ' and the number of pegs of the correct value but in the wrong position (0-4)'
+      feedback = gets.chomp.split('').map(&:to_i)
+      valid_entry =
+        (feedback.length == 2) && feedback.all? { |number| number >= 0 && number <= 4 }
+    end
+    feedback
   end
 end
 
 # Specifics for AI player
 class Computer < Player
+  def new_game
+    # Create the list 1111,...,6666 of all candidate secret codes
+    guess_list_temp = (1111..6666).map { |n| n.to_s.split('').map(&:to_i) }
+    @guess_list = guess_list_temp.filter { |combo| combo.none?(0) } # removes all combos including 0
+    @first_guess = true
+  end
+
   def define_secret
     Array.new(4) { rand(1..6) }
   end
@@ -71,5 +92,15 @@ class Computer < Player
 
   def give_feedback(secret, guess)
     [count_blacks(secret, guess), count_whites(secret, guess)]
+  end
+
+  def guess_combo(last_guess, last_feedback)
+    if @first_guess
+      @first_guess = false
+      [1, 1, 2, 2]
+    else
+      @guess_list = @guess_list.filter { |ans| last_feedback == give_feedback(ans, last_guess) }
+      @guess_list[0]
+    end
   end
 end
