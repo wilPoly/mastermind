@@ -3,7 +3,7 @@
 # General Player class
 class Player
   attr_reader :name
-  attr_accessor :score
+  attr_accessor :score, :last_role
 
   def initialize(name, score: 0)
     @name = name
@@ -11,7 +11,7 @@ class Player
   end
 
   def to_s
-    "#{@name} is #{role} - Score: #{@score}"
+    "#{@name}'s score: #{@score}"
   end
 end
 
