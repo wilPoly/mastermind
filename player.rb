@@ -28,12 +28,12 @@ class Human < Player
     combo
   end
 
-  def guess_combo(*)
+  def define_secret
+    puts 'Choose your secret combination.'
     combo_input
   end
 
-  def define_secret
-    puts 'Choose your secret combination.'
+  def guess_combo(*)
     combo_input
   end
 

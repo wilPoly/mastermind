@@ -56,13 +56,13 @@ class Game
   def codemaster_win
     puts "#{@codemaster.name} wins."
     @codemaster.score += 1
+    new_game
   end
 
   def round
     @turns_left = TURNS
     until @turns_left.zero?
-      p @board.secret_combo
-      # Reminds the last guess and the last feedback given
+      # p @board.secret_combo
       guess = @codebreaker.guess_combo(@board.guesses.last, @board.feedbacks.last)
       feedback = @codemaster.give_feedback(@board.secret_combo, guess)
       @board.put_pegs(guess, feedback)
@@ -76,5 +76,3 @@ class Game
 end
 
 Game.new
-# game.round
-# game.choose_role
